@@ -1,15 +1,25 @@
 package com.mehdi.travelcar
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.mehdi.travelcar.carset.data.CarSet
+import com.mehdi.travelcar.databinding.ActivityMainBinding
+import com.mehdi.travelcar.databinding.ItemDetailFragmentBinding
+import com.mehdi.travelcar.viewModel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_item_detail.*
-import kotlinx.android.synthetic.main.item_detail.view.*
+import kotlinx.android.synthetic.main.item_holder.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+
 
 /**
  * A fragment representing a single Item detail screen.
@@ -29,14 +39,8 @@ class ItemDetailFragment : Fragment() {
 
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
-                // Load the dummy content specified by the fragment
-                // arguments. In a real-world scenario, use a Loader
-                // to load content from a content provider.
-
                 val json = Json(JsonConfiguration.Stable)
                 item = json.parse(CarSet.serializer(), it.get(ARG_ITEM_ID).toString())
-
-                //item = it.get(ARG_ITEM_ID) as CarSet
                 activity?.toolbar_layout?.title = item?.make
             }
         }
@@ -46,21 +50,30 @@ class ItemDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.item_detail, container, false)
 
-        // Show the dummy content as text in a TextView.
-        item?.let {
-            rootView.item_detail.text = it.model
-        }
+        val binding = DataBindingUtil
+            .inflate< ItemDetailFragmentBinding >(
+                inflater,
+                R.layout.item_detail_fragment,
+                container,
+                false
+            )
 
-        return rootView
+        binding.setVariable(BR.carObject, item)
+
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * The fragment argument representing the item ID that this fragment
-         * represents.
-         */
+    companion object{
         const val ARG_ITEM_ID = "item_id"
+
+        @JvmStatic
+        @BindingAdapter("app:load_image")
+        fun setImageUrl(view: ImageView, imageUrl: String?) {
+            Glide.with(view.context)
+                .load(imageUrl).apply(RequestOptions().fitCenter())
+                .into(view)
+        }
     }
 }

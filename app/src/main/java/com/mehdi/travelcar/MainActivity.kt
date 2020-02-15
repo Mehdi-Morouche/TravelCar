@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.mehdi.travelcar.databinding.ActivityMainBinding
 import com.mehdi.travelcar.viewModel.MainActivityViewModel
-import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,10 +46,7 @@ class MainActivity : AppCompatActivity() {
             lifecycle.addObserver(mModel)
         }
 
-        dataBinding.closestStation.setOnClickListener {
-            closeFab()
-            setupPermissions()
-        }
+
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -73,35 +70,6 @@ class MainActivity : AppCompatActivity() {
             applicationContext,
             R.anim.fab_rotate_close_fast
         )
-
-        fabRotateOpen?.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                dataBinding.fabOpen.setImageResource(R.drawable.ic_cancel_black_24dp)
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
-
-        dataBinding.fabOpen.setOnClickListener {
-            animateFAB()
-        }
-
-        dataBinding.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    dataBinding.relativeFab.visibility = View.GONE
-                } else {
-                    showFab()
-                    dataBinding.relativeFab.visibility = View.VISIBLE
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
-
     }
 
     private fun setupPermissions() {
@@ -133,34 +101,6 @@ class MainActivity : AppCompatActivity() {
                     //getPosition()
                 }
             }
-        }
-    }
-
-    fun closeFab() {
-        isFabOpen = true
-        animateFAB()
-    }
-
-    fun showFab() {
-        isFabOpen = false
-        dataBinding.fabOpen.setImageResource(R.drawable.ic_filter_list_black_24dp)
-        dataBinding.fabOpen.startAnimation(fabRotateCloseFast)
-        dataBinding.closestStation.startAnimation(fabCloseFast)
-        dataBinding.updatedStation.startAnimation(fabCloseFast)
-    }
-
-    fun animateFAB() {
-        if (isFabOpen) {
-            dataBinding.fabOpen.setImageResource(R.drawable.ic_filter_list_black_24dp)
-            dataBinding.fabOpen.startAnimation(fabRotateClose)
-            dataBinding.closestStation.startAnimation(fabClose)
-            dataBinding.updatedStation.startAnimation(fabClose)
-            isFabOpen = false
-        } else {
-            dataBinding.fabOpen.startAnimation(fabRotateOpen)
-            dataBinding.closestStation.startAnimation(fabOpen)
-            dataBinding.updatedStation.startAnimation(fabOpen)
-            isFabOpen = true
         }
     }
 }

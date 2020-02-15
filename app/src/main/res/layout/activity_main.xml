@@ -42,48 +42,6 @@
             android:adapter="@{model.adapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-        <RelativeLayout
-            android:id="@+id/relativeFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabOpen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16sp"
-                android:layout_alignParentBottom="true"
-                app:tint="@null"
-                android:elevation="0dp"
-                app:elevation="0dp"
-                app:srcCompat="@drawable/ic_filter_list_black_24dp"/>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/closestStation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_above="@+id/fabOpen"
-                android:visibility="invisible"
-                app:pressedTranslationZ="12dp"
-                app:tint="@null"
-                app:srcCompat="@drawable/ic_place_black_24dp"/>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/updatedStation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_above="@+id/closestStation"
-                android:visibility="invisible"
-                app:pressedTranslationZ="12dp"
-                app:srcCompat="@drawable/ic_update_black_24dp"/>
-
-        </RelativeLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

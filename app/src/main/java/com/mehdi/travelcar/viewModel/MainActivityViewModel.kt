@@ -59,5 +59,4 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 .into(view)
         }
     }
-
 }
