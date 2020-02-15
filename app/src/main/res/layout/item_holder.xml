@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="car"
+            type="com.mehdi.travelcar.carset.data.CarSet"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <ImageView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="16dp"
+                android:id="@+id/image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:load_image="@{car.picture}" />
+
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image"
+                android:id="@+id/make"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{car.make}"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/make"
+                app:layout_constraintStart_toEndOf="@id/image"
+                android:id="@+id/model"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{car.model}"
+                android:textSize="14sp"
+                android:textColor="@color/black"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>
