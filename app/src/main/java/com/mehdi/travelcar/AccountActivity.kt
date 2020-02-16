@@ -2,24 +2,28 @@ package com.mehdi.travelcar
 
 import android.Manifest
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mehdi.travelcar.databinding.ActivityAccountBinding
+import com.mehdi.travelcar.entities.AccountEntity
 import com.mehdi.travelcar.viewmodel.AccountActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -41,19 +45,40 @@ class AccountActivity : AppCompatActivity() {
 
     private lateinit var mCurrentPhotoPath : String
 
+    private lateinit var account: AccountEntity
+    private var insertObj = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        mModel = ViewModelProviders.of(this).get(AccountActivityViewModel::class.java)
+        mModel = ViewModelProvider(this).get(AccountActivityViewModel::class.java)
 
         dataBinding = DataBindingUtil.setContentView<ActivityAccountBinding>(this, R.layout.activity_account).apply {
             //model = mModel
             setLifecycleOwner(this@AccountActivity)
-            lifecycle.addObserver(mModel)
+            //lifecycle.addObserver(mModel)
         }
 
-        dataBinding.photo.setOnClickListener {
+        mModel.account.observe(this, Observer { acc ->
+            if (acc == null) {
+                insertObj = true
+                account = AccountEntity()
+            } else {
+                account = acc
+
+                dataBinding.editLastname.text = Editable.Factory.getInstance().newEditable(account.lastname)
+                dataBinding.editName.text = Editable.Factory.getInstance().newEditable(account.name)
+                dataBinding.editAddress.text = Editable.Factory.getInstance().newEditable(account.address)
+                dataBinding.editBirthdate.text = Editable.Factory.getInstance().newEditable(account.birthdate)
+
+                Glide.with(applicationContext)
+                    .load(account.photo).apply(RequestOptions().circleCrop().fitCenter())
+                    .into(dataBinding.photo)
+            }
+        })
+
+        dataBinding.relativePhoto.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.CAMERA) ==
@@ -63,14 +88,36 @@ class AccountActivity : AppCompatActivity() {
                     //show popup to request runtime permission
                     requestPermissions(permissions, PERMISSION_CODE)
                 }
-                else{
+                else {
                     //permission already granted
                     pickImageFromGallery()
                 }
             }
-            else{
+            else {
                 //system OS is < Marshmallow
                 pickImageFromGallery()
+            }
+        }
+
+        val cal = Calendar.getInstance()
+
+        val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            val myFormat = "dd/MM/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            dataBinding.editBirthdate.text = Editable.Factory.getInstance().newEditable(sdf.format(cal.time))
+
+        }
+
+        dataBinding.editBirthdate.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                DatePickerDialog(this@AccountActivity, dateSetListener,
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)).show()
             }
         }
 
@@ -94,16 +141,10 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun pickImageFromGallery() {
-        /*val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)*/
-
-         */
 
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
 
-        //val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val file: File = createFile()
 
@@ -112,8 +153,7 @@ class AccountActivity : AppCompatActivity() {
             "com.mehdi.travelcar.fileprovider",
             file
         )
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
-
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
 
         val chooser = Intent.createChooser(intent, "")
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
@@ -141,13 +181,17 @@ class AccountActivity : AppCompatActivity() {
                 Glide.with(applicationContext)
                     .load(data?.data).apply(RequestOptions().circleCrop().fitCenter())
                     .into(dataBinding.photo)
+
+                account.photo = data?.data.toString()
             }
             else {
                 Glide.with(applicationContext)
                     .load(mCurrentPhotoPath).apply(RequestOptions().circleCrop().fitCenter())
                     .into(dataBinding.photo)
+
+                account.photo = mCurrentPhotoPath
             }
-            
+
         }
 
         super.onActivityResult(requestCode, resultCode, data)
@@ -174,7 +218,9 @@ class AccountActivity : AppCompatActivity() {
         dataBinding.editLastname.isEnabled = true
         dataBinding.editName.isEnabled = true
         dataBinding.editAddress.isEnabled = true
-
+        dataBinding.editBirthdate.isEnabled = true
+        dataBinding.relativePhoto.isClickable = true
+        dataBinding.editPhoto.visibility = View.VISIBLE
     }
 
     fun save(v : View) {
@@ -183,5 +229,20 @@ class AccountActivity : AppCompatActivity() {
         dataBinding.editLastname.isEnabled = false
         dataBinding.editName.isEnabled = false
         dataBinding.editAddress.isEnabled = false
+        dataBinding.editBirthdate.isEnabled = false
+        dataBinding.relativePhoto.isClickable = false
+        dataBinding.editPhoto.visibility = View.GONE
+
+
+        account.lastname = dataBinding.lastname.editText?.text.toString()
+        account.name = dataBinding.name.editText?.text.toString()
+        account.address = dataBinding.address.editText?.text.toString()
+        account.birthdate = dataBinding.birthdate.editText?.text.toString()
+
+        if (insertObj) {
+            mModel.insert(account)
+        } else {
+            mModel.update(account)
+        }
     }
 }

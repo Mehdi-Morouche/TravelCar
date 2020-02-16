@@ -2,7 +2,6 @@ package com.mehdi.travelcar.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BackgroundColorSpan
@@ -16,7 +15,7 @@ import com.mehdi.travelcar.BR
 import com.mehdi.travelcar.ItemDetailActivity
 import com.mehdi.travelcar.ItemDetailFragment
 import com.mehdi.travelcar.R
-import com.mehdi.travelcar.carset.data.CarSet
+import com.mehdi.travelcar.entities.CarEntity
 import com.mehdi.travelcar.databinding.ItemHolderBinding
 import kotlinx.android.synthetic.main.item_holder.view.*
 import kotlinx.serialization.json.Json
@@ -24,8 +23,8 @@ import kotlinx.serialization.json.JsonConfiguration
 
 class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
-    private var cars = listOf<CarSet>()
-    private var carsNotFiltered = listOf<CarSet>()
+    private var cars = listOf<CarEntity>()
+    private var carsNotFiltered = listOf<CarEntity>()
 
     private var filterText: String = ""
 
@@ -35,16 +34,16 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     init {
         onClickListener = View.OnClickListener { v ->
-            val item = v.tag as CarSet
+            val item = v.tag as CarEntity
             val intent = Intent(v.context, ItemDetailActivity::class.java).apply {
                 val json = Json(JsonConfiguration.Stable)
-                putExtra(ItemDetailFragment.ARG_ITEM_ID, json.stringify(CarSet.serializer(), item))
+                putExtra(ItemDetailFragment.ARG_ITEM_ID, json.stringify(CarEntity.serializer(), item))
             }
             v.context.startActivity(intent)
         }
     }
 
-    fun setData(dataList: List<CarSet>) {
+    fun setData(dataList: List<CarEntity>) {
         cars = emptyList()
         cars = dataList
         carsNotFiltered = dataList
@@ -82,7 +81,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(context: Context, dataObject: CarSet, filterText: String) {
+        fun bind(context: Context, dataObject: CarEntity, filterText: String) {
 
             if (filterText.isNotEmpty()) {
                 val spannable = SpannableString(dataObject.make)

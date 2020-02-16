@@ -1,74 +1,40 @@
 package com.mehdi.travelcar.viewmodel
 
 import android.app.Application
-import android.util.Log
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.mehdi.travelcar.adapter.Adapter
-import com.mehdi.travelcar.api.CarService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.*
+import com.mehdi.travelcar.db.AccountDatabase
+import com.mehdi.travelcar.entities.AccountEntity
+import com.mehdi.travelcar.repository.AccountRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * Created by mehdi on 2020-02-16.
  */
 
-class AccountActivityViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver {
+class AccountActivityViewModel(application: Application) : AndroidViewModel(application) {
 
-    var TAG = "MainActivityViewModel"
+    private val repository: AccountRepository
 
-    var adapter = Adapter()
+    val account: LiveData<AccountEntity>
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(CarService.ENDPOINT)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service = retrofit.create(CarService::class.java)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getCars()
-            withContext(Dispatchers.Main) {
-                try {
-                    if (response.isSuccessful) {
-                        adapter.setData(dataList = response.body()!!)
-                    }
-                    else {
-
-                    }
-                } catch (e: HttpException) {
-                    Log.e(TAG, "Exception ${e.message}")
-                } catch (e: Throwable) {
-                    Log.e(TAG, "Throwable ${e.message}")
-                }
-            }
-        }
+    init {
+        val accountDao = AccountDatabase.getDatabase(application).accountDao()
+        repository = AccountRepository(accountDao)
+        account = repository.account
     }
 
-    fun filter(text : String) {
-        adapter.filterData(text)
+    /**
+     * The implementation of insert() in the database is completely hidden from the UI.
+     * Room ensures that you're not doing any long running operations on
+     * the main thread, blocking the UI, so we don't need to handle changing Dispatchers.
+     * ViewModels have a coroutine scope based on their lifecycle called
+     * viewModelScope which we can use here.
+     */
+    fun insert(account: AccountEntity) = viewModelScope.launch {
+        repository.insert(account)
     }
 
-    companion object{
-        @JvmStatic
-        @BindingAdapter("app:load_image")
-        fun setImageUrl(view: ImageView, imageUrl: String?) {
-            Glide.with(view.context)
-                .load(imageUrl).apply(RequestOptions().circleCrop().fitCenter())
-                .into(view)
-        }
+    fun update(account: AccountEntity) = viewModelScope.launch {
+        repository.update(account)
     }
 }

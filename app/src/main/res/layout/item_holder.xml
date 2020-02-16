@@ -8,7 +8,7 @@
 
         <variable
             name="car"
-            type="com.mehdi.travelcar.carset.data.CarSet"/>
+            type="com.mehdi.travelcar.entities.CarEntity"/>
     </data>
 
     <androidx.cardview.widget.CardView

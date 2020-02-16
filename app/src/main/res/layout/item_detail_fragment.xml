@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="carObject"
-            type="com.mehdi.travelcar.carset.data.CarSet"/>
+            type="com.mehdi.travelcar.entities.CarEntity"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.mehdi.travelcar.carset.data.CarSet
+import com.mehdi.travelcar.entities.CarEntity
 import com.mehdi.travelcar.databinding.ItemDetailFragmentBinding
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import kotlinx.serialization.json.Json
@@ -25,7 +25,7 @@ import kotlinx.serialization.json.JsonConfiguration
  */
 class ItemDetailFragment : Fragment() {
 
-    private var item: CarSet? = null
+    private var item: CarEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class ItemDetailFragment : Fragment() {
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
                 val json = Json(JsonConfiguration.Stable)
-                item = json.parse(CarSet.serializer(), it.get(ARG_ITEM_ID).toString())
+                item = json.parse(CarEntity.serializer(), it.get(ARG_ITEM_ID).toString())
                 activity?.toolbar_layout?.title = item?.make
             }
         }

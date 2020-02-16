@@ -1,4 +1,4 @@
-package com.mehdi.travelcar.carset.data
+package com.mehdi.travelcar.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-@Entity(tableName = "sets")
-data class CarSet(
+@Entity(tableName = "car")
+data class CarEntity(
     @PrimaryKey
     @field:SerializedName("set_num")
     val id: String? = null,

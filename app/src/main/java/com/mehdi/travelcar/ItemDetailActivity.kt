@@ -2,15 +2,10 @@ package com.mehdi.travelcar
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
-import com.mehdi.travelcar.carset.data.CarSet
 import kotlinx.android.synthetic.main.activity_item_detail.*
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.parse
 
 /**
  * An activity representing a single Item detail screen. This
