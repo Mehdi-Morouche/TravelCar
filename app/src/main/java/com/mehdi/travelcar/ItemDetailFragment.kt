@@ -54,7 +54,7 @@ class ItemDetailFragment : Fragment() {
 
         binding.setVariable(BR.carObject, item)
 
-        for (value in item?.equipments.orEmpty()) {
+        /*for (value in item?.equipments.orEmpty()) {
             when (value) {
                 "GPS" -> binding.gps.visibility = View.VISIBLE
                 "Siege enfant" -> binding.siege.visibility = View.VISIBLE
@@ -63,7 +63,7 @@ class ItemDetailFragment : Fragment() {
                 "ABS" -> binding.abs.visibility = View.VISIBLE
                 "Airbags" -> binding.airbag.visibility = View.VISIBLE
             }
-        }
+        }*/
 
         return binding.root
 

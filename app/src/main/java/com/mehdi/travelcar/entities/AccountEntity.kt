@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "account")
 class AccountEntity {
-    @PrimaryKey var id: Int = 1
+    @PrimaryKey var id: Int = 0
     @ColumnInfo(name = "lastname") var lastname: String? = null
     @ColumnInfo(name = "name") var name: String? = null
     @ColumnInfo(name = "address") var address: String? = null

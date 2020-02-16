@@ -1,22 +1,18 @@
-package com.mehdi.travelcar.CarEntity.data
+package com.mehdi.travelcar.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.mehdi.travelcar.entities.CarEntity
 
 /**
- * Created by mehdi on 2020-02-15.
+ * Created by mehdi on 2020-02-16.
  */
-
 @Dao
 interface CarDao {
 
-    @Query("SELECT * FROM sets WHERE themeId = :themeId ORDER BY year DESC")
-    fun getLegoSets(themeId: Int): LiveData<List<CarEntity>>
+    @Query("SELECT * from car")
+    fun getCars(): LiveData<List<CarEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(legoSets: List<CarEntity>)
+    suspend fun insertAll(cars: List<CarEntity>)
 }

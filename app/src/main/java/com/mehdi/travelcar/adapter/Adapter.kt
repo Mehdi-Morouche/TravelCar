@@ -52,7 +52,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     fun filterData(text : String) {
         filterText = text.toLowerCase()
-        cars = carsNotFiltered.filter { s -> s.make.contains(text, ignoreCase = true) }
+        cars = carsNotFiltered.filter { s -> s.make!!.contains(text, ignoreCase = true) }
         notifyDataSetChanged()
     }
 
@@ -87,7 +87,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
                 val spannable = SpannableString(dataObject.make)
                 spannable.setSpan(
                     BackgroundColorSpan(context.resources.getColor(R.color.colorAccent)),
-                    dataObject.make.toLowerCase().indexOf(filterText), dataObject.make.toLowerCase().indexOf(filterText) + filterText.length,
+                    dataObject.make!!.toLowerCase().indexOf(filterText), dataObject.make!!.toLowerCase().indexOf(filterText) + filterText.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
                 binding.root.make.text = spannable
