@@ -62,7 +62,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 withContext(Dispatchers.Main) {
                     try {
                         if (response.isSuccessful) {
-
                             insertAll(response.body()!!)
                         }
                         else {
