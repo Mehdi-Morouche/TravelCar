@@ -97,6 +97,8 @@ class AccountActivity : AppCompatActivity() {
             }
         }
 
+        dataBinding.relativePhoto.isClickable = false
+
         val cal = Calendar.getInstance()
 
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -180,14 +182,14 @@ class AccountActivity : AppCompatActivity() {
 
             if (data?.data != null) {
                 Glide.with(applicationContext)
-                    .load(data?.data).apply(RequestOptions().circleCrop().fitCenter())
+                    .load(data?.data).apply(RequestOptions().circleCrop())
                     .into(dataBinding.photo)
 
                 account.photo = data?.data.toString()
             }
             else {
                 Glide.with(applicationContext)
-                    .load(mCurrentPhotoPath).apply(RequestOptions().circleCrop().fitCenter())
+                    .load(mCurrentPhotoPath).apply(RequestOptions().circleCrop())
                     .into(dataBinding.photo)
 
                 account.photo = mCurrentPhotoPath
