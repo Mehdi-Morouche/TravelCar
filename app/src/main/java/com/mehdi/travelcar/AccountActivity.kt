@@ -55,9 +55,7 @@ class AccountActivity : AppCompatActivity() {
         mModel = ViewModelProvider(this).get(AccountActivityViewModel::class.java)
 
         dataBinding = DataBindingUtil.setContentView<ActivityAccountBinding>(this, R.layout.activity_account).apply {
-            //model = mModel
             setLifecycleOwner(this@AccountActivity)
-            //lifecycle.addObserver(mModel)
         }
 
         mModel.account.observe(this, Observer { acc ->
@@ -73,7 +71,7 @@ class AccountActivity : AppCompatActivity() {
                 dataBinding.editBirthdate.text = Editable.Factory.getInstance().newEditable(account.birthdate)
 
                 Glide.with(applicationContext)
-                    .load(account.photo).apply(RequestOptions().circleCrop().fitCenter())
+                    .load(account.photo).apply(RequestOptions().circleCrop())
                     .into(dataBinding.photo)
             }
         })
@@ -102,22 +100,25 @@ class AccountActivity : AppCompatActivity() {
         val cal = Calendar.getInstance()
 
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.YEAR, year )
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            val myFormat = "dd/MM/yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            val myFormat = "dd/MM/yyyy"
+            val sdf = SimpleDateFormat(myFormat, Locale.FRANCE)
             dataBinding.editBirthdate.text = Editable.Factory.getInstance().newEditable(sdf.format(cal.time))
 
         }
 
         dataBinding.editBirthdate.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
+                var date = account.birthdate?.split("/")
+                Log.e("cal", date.toString())
+
                 DatePickerDialog(this@AccountActivity, dateSetListener,
-                    cal.get(Calendar.YEAR),
-                    cal.get(Calendar.MONTH),
-                    cal.get(Calendar.DAY_OF_MONTH)).show()
+                    if (date.isNullOrEmpty()) cal.get(Calendar.YEAR) else Integer.valueOf(date[2]),
+                    if (date.isNullOrEmpty()) cal.get(Calendar.MONTH) else Integer.valueOf(date[1]),
+                    if (date.isNullOrEmpty()) cal.get(Calendar.DAY_OF_MONTH) else Integer.valueOf(date[0])).show()
             }
         }
 

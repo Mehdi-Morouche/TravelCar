@@ -18,7 +18,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:load_image="@{carObject.picture}"/>
+            app:load_image="@{carObject.picture}"
+            android:layout_margin="16dp"/>
 
         <TextView
             android:id="@+id/model"
@@ -27,6 +28,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img"
             android:text="@string/model"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:layout_margin="16dp"/>
 
         <TextView
@@ -35,6 +38,8 @@
             app:layout_constraintStart_toEndOf="@id/model"
             app:layout_constraintTop_toBottomOf="@id/img"
             android:text="@{carObject.model}"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:layout_margin="16dp"/>
 
         <TextView
@@ -44,6 +49,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/model"
             android:text="@string/year"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:layout_margin="16dp"/>
 
         <TextView
@@ -52,20 +59,33 @@
             app:layout_constraintStart_toEndOf="@id/year"
             app:layout_constraintTop_toBottomOf="@id/model"
             android:text="@{String.valueOf(carObject.year)}"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_margin="16dp"/>
+
+        <TextView
+            android:id="@+id/equipments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/year"
+            android:text="@string/equipment"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:layout_margin="16dp"/>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/year">
+            app:layout_constraintStart_toEndOf="@id/equipments"
+            app:layout_constraintTop_toBottomOf="@id/year"
+            android:layout_margin="16dp">
 
             <ImageView
                 android:id="@+id/airbag"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/year"
                 app:srcCompat="@drawable/ic_airbag"
@@ -73,36 +93,36 @@
 
             <ImageView
                 android:id="@+id/freezer"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 app:srcCompat="@drawable/ic_freezer"
                 android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/abs"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 app:srcCompat="@drawable/ic_abs"
                 android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/gps"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 app:srcCompat="@drawable/ic_navigation_black_24dp"
                 android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/assistance"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 app:srcCompat="@drawable/ic_customer_service"
                 android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/siege"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 app:srcCompat="@drawable/ic_car_seat"
                 android:visibility="gone" />
         </LinearLayout>

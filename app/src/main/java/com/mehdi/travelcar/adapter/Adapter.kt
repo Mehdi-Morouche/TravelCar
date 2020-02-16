@@ -15,11 +15,13 @@ import com.mehdi.travelcar.BR
 import com.mehdi.travelcar.ItemDetailActivity
 import com.mehdi.travelcar.ItemDetailFragment
 import com.mehdi.travelcar.R
-import com.mehdi.travelcar.entities.CarEntity
 import com.mehdi.travelcar.databinding.ItemHolderBinding
+import com.mehdi.travelcar.entities.CarEntity
 import kotlinx.android.synthetic.main.item_holder.view.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import java.util.*
+
 
 class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -52,7 +54,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     fun filterData(text : String) {
         filterText = text.toLowerCase()
-        cars = carsNotFiltered.filter { s -> s.make!!.contains(text, ignoreCase = true) }
+        cars = carsNotFiltered.filter { s -> s.make!!.contains(text, ignoreCase = true)  }
         notifyDataSetChanged()
     }
 
@@ -101,5 +103,37 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
                 executePendingBindings()
             }
         }
+    }
+
+    fun isAnagram(firstWord: String, secondWord: String): Boolean {
+        val word1 = firstWord.toCharArray()
+        val word2 = secondWord.toCharArray()
+
+        val lettersInWord1: MutableMap<Char, Int?> =
+            HashMap()
+
+        for (c in word1) {
+            var count = 1
+            if (lettersInWord1.containsKey(c)) {
+                count = lettersInWord1[c]!! + 1
+            }
+            lettersInWord1[c] = count
+        }
+
+        for (c in word2) {
+            var count = -1
+            if (lettersInWord1.containsKey(c)) {
+                count = lettersInWord1[c]!! - 1
+            }
+            lettersInWord1[c] = count
+        }
+
+        for (c in lettersInWord1.keys) {
+            if (lettersInWord1[c] != 0) {
+                return false
+            }
+        }
+
+        return true
     }
 }

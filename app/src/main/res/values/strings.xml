@@ -2,9 +2,9 @@
     <string name="app_name">TravelCar</string>
     <string name="action_settings">Settings</string>
     
-    <string name="model">Modèle</string>
-    <string name="year">Année</string>
-    <string name="equipment">Équipement</string>
+    <string name="model">Modèle :</string>
+    <string name="year">Année :</string>
+    <string name="equipment">Équipement :</string>
 
     <string name="lastname">Nom</string>
     <string name="name">Prénom</string>
