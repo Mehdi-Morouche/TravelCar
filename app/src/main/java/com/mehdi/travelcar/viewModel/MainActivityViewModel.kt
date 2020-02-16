@@ -21,7 +21,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     var adapter = Adapter()
 
-
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
 
@@ -48,6 +47,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 }
             }
         }
+    }
+
+    fun filter(text : String) {
+        adapter.filterData(text)
     }
 
     companion object{

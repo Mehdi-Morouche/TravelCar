@@ -39,9 +39,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{car.make}"
                 android:textSize="16sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textColorHighlight="#F3A"/>
 
             <TextView
                 app:layout_constraintTop_toBottomOf="@id/make"
@@ -56,6 +56,7 @@
                 android:textColor="@color/black"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
 </layout>

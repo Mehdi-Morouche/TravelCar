@@ -54,29 +54,58 @@
             android:text="@{String.valueOf(carObject.year)}"
             android:layout_margin="16dp"/>
 
-        <ImageView
-            android:id="@+id/DD"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/year"
-            app:srcCompat="@drawable/ic_airbag" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/year">
 
-        <ImageView
-            android:id="@+id/FF"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/DD"
-            app:srcCompat="@drawable/ic_freezer" />
+            <ImageView
+                android:id="@+id/airbag"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/year"
+                app:srcCompat="@drawable/ic_airbag"
+                android:visibility="gone"/>
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/FF"
-            app:srcCompat="@drawable/ic_abs" />
+            <ImageView
+                android:id="@+id/freezer"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_freezer"
+                android:visibility="gone" />
 
+            <ImageView
+                android:id="@+id/abs"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_abs"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/gps"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_navigation_black_24dp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/assistance"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_customer_service"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/siege"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_car_seat"
+                android:visibility="gone" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

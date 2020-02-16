@@ -1,6 +1,11 @@
 package com.mehdi.travelcar.adapter
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +18,18 @@ import com.mehdi.travelcar.ItemDetailFragment
 import com.mehdi.travelcar.R
 import com.mehdi.travelcar.carset.data.CarSet
 import com.mehdi.travelcar.databinding.ItemHolderBinding
+import kotlinx.android.synthetic.main.item_holder.view.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
 class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private var cars = listOf<CarSet>()
+    private var carsNotFiltered = listOf<CarSet>()
 
+    private var filterText: String = ""
+
+    private lateinit var context: Context
 
     private val onClickListener: View.OnClickListener
 
@@ -37,12 +47,21 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
     fun setData(dataList: List<CarSet>) {
         cars = emptyList()
         cars = dataList
+        carsNotFiltered = dataList
+        notifyDataSetChanged()
+    }
+
+    fun filterData(text : String) {
+        filterText = text.toLowerCase()
+        cars = carsNotFiltered.filter { s -> s.make.contains(text, ignoreCase = true) }
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         var binding: ViewDataBinding? = DataBindingUtil.inflate<ItemHolderBinding>(inflater, R.layout.item_holder, parent, false)
+
+        context = parent.context
 
         return ViewHolder(binding!!)
     }
@@ -52,7 +71,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(cars[position])
+        holder.bind(context, cars[position], filterText)
 
         val item = cars[position]
         with(holder.itemView) {
@@ -63,7 +82,20 @@ class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(dataObject: CarSet) {
+        fun bind(context: Context, dataObject: CarSet, filterText: String) {
+
+            if (filterText.isNotEmpty()) {
+                val spannable = SpannableString(dataObject.make)
+                spannable.setSpan(
+                    BackgroundColorSpan(context.resources.getColor(R.color.colorAccent)),
+                    dataObject.make.toLowerCase().indexOf(filterText), dataObject.make.toLowerCase().indexOf(filterText) + filterText.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                binding.root.make.text = spannable
+            }
+            else {
+                binding.root.make.text = dataObject.make
+            }
 
             with(binding) {
                 setVariable(BR.car, dataObject)

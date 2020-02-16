@@ -8,15 +8,11 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mehdi.travelcar.carset.data.CarSet
-import com.mehdi.travelcar.databinding.ActivityMainBinding
 import com.mehdi.travelcar.databinding.ItemDetailFragmentBinding
-import com.mehdi.travelcar.viewModel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_item_detail.*
-import kotlinx.android.synthetic.main.item_holder.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
@@ -29,9 +25,6 @@ import kotlinx.serialization.json.JsonConfiguration
  */
 class ItemDetailFragment : Fragment() {
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
     private var item: CarSet? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +53,17 @@ class ItemDetailFragment : Fragment() {
             )
 
         binding.setVariable(BR.carObject, item)
+
+        for (value in item?.equipments.orEmpty()) {
+            when (value) {
+                "GPS" -> binding.gps.visibility = View.VISIBLE
+                "Siege enfant" -> binding.siege.visibility = View.VISIBLE
+                "Assistance 24h/24" -> binding.assistance.visibility = View.VISIBLE
+                "Climatisation" -> binding.freezer.visibility = View.VISIBLE
+                "ABS" -> binding.abs.visibility = View.VISIBLE
+                "Airbags" -> binding.airbag.visibility = View.VISIBLE
+            }
+        }
 
         return binding.root
 

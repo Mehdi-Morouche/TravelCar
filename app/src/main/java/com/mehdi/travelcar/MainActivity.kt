@@ -3,16 +3,13 @@ package com.mehdi.travelcar
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.text.TextWatcher
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.library.baseAdapters.BR.model
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import com.mehdi.travelcar.databinding.ActivityMainBinding
 import com.mehdi.travelcar.viewModel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,15 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var dataBinding: ActivityMainBinding
 
-    private var fabOpen: Animation? = null
-    private var fabClose: Animation? = null
-    private var fabCloseFast: Animation? = null
-    private var fabRotateOpen: Animation? = null
-    private var fabRotateClose: Animation? = null
-    private var fabRotateCloseFast: Animation? = null
-
-    private var isFabOpen = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,30 +34,21 @@ class MainActivity : AppCompatActivity() {
             lifecycle.addObserver(mModel)
         }
 
+        dataBinding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
+            override fun onQueryTextChange(newText: String): Boolean {
+                mModel.filter(newText)
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+        })
 
         setSupportActionBar(toolbar)
         toolbar.title = title
-
-        fabOpen = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
-        fabClose = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
-
-        fabCloseFast = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close_fast)
-
-        fabRotateOpen = AnimationUtils.loadAnimation(
-            applicationContext,
-            R.anim.fab_rotate_open
-        )
-
-        fabRotateClose = AnimationUtils.loadAnimation(
-            applicationContext,
-            R.anim.fab_rotate_close
-        )
-
-        fabRotateCloseFast = AnimationUtils.loadAnimation(
-            applicationContext,
-            R.anim.fab_rotate_close_fast
-        )
     }
 
     private fun setupPermissions() {
