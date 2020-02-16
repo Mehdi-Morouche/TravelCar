@@ -1,9 +1,11 @@
 package com.mehdi.travelcar
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -11,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.mehdi.travelcar.databinding.ActivityMainBinding
-import com.mehdi.travelcar.viewModel.MainActivityViewModel
+import com.mehdi.travelcar.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -34,7 +36,30 @@ class MainActivity : AppCompatActivity() {
             lifecycle.addObserver(mModel)
         }
 
-        dataBinding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        /*dataBinding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                mModel.filter(newText)
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+        })*/
+
+        setSupportActionBar(toolbar)
+        toolbar.title = title
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        val searchItem: MenuItem? = menu?.findItem(R.id.search)
+        val searchView: SearchView? = searchItem?.actionView as SearchView
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 mModel.filter(newText)
@@ -47,8 +72,14 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        setSupportActionBar(toolbar)
-        toolbar.title = title
+        val accountItem: MenuItem? = menu?.findItem(R.id.account)
+        accountItem?.setOnMenuItemClickListener {
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
+            true
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun setupPermissions() {

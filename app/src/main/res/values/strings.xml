@@ -5,4 +5,11 @@
     <string name="model">Modèle</string>
     <string name="year">Année</string>
     <string name="equipment">Équipement</string>
+
+    <string name="lastname">Nom</string>
+    <string name="name">Prénom</string>
+    <string name="address">Adresse</string>
+
+    <string name="edit">Éditer</string>
+    <string name="save">Sauvegarder</string>
 </resources>

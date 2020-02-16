@@ -1,21 +1,30 @@
-package com.mehdi.travelcar.viewModel
+package com.mehdi.travelcar.viewmodel
 
 import android.app.Application
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mehdi.travelcar.adapter.Adapter
 import com.mehdi.travelcar.api.CarService
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Created by mehdi on 2020-02-16.
+ */
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver {
+class AccountActivityViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver {
 
     var TAG = "MainActivityViewModel"
 

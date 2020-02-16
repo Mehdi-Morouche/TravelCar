@@ -6,7 +6,7 @@
 
     <data>
         <variable name="model"
-            type="com.mehdi.travelcar.viewModel.MainActivityViewModel"/>
+            type="com.mehdi.travelcar.viewmodel.MainActivityViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,11 +28,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/AppTheme.PopupOverlay" >
-
-            <SearchView
-                android:id="@+id/search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
             </androidx.appcompat.widget.Toolbar>
 
