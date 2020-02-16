@@ -1,8 +1,6 @@
 package com.mehdi.travelcar.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
@@ -11,7 +9,7 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-@Entity(tableName = "car")
+@Entity(tableName = "car", indices = arrayOf(Index(value = ["make", "model"], unique = true)))
 class CarEntity {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
     @field:SerializedName("make")
